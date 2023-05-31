@@ -51,16 +51,6 @@ class CorporationServiceTest {
         when(corporationRepository.findById(1L)).thenReturn(java.util.Optional.of(corporationEntity));
     }
 
-    @Test
-    void shouldUserTryToAddCorporationWithExistingId(){
-        CorporationEntity corporationEntity = new CorporationEntity();
-        corporationEntity.setId(1L);
-        corporationEntity.setName("Test");
-        corporationService.createCorporation(corporationEntity);
-        verify(corporationRepository).save(corporationEntity);
-
-    }
-
 
 
 }

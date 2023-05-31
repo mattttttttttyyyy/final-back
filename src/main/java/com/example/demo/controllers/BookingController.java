@@ -4,6 +4,7 @@ import com.example.demo.entitys.BookingEntity;
 import com.example.demo.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

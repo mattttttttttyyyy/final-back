@@ -18,9 +18,11 @@ public class BookingService {
     ConferenceRoomRepository conferenceRoomRepository;
 
     public void addBooking(BookingEntity booking, long room_id) {
-
-        if (conferenceRoomRepository.existsById(room_id)) {
-            // ... (existing code)
+        if (booking.getStartTime().toLocalDateTime().isAfter(booking.getEndTime().toLocalDateTime())){
+            System.out.println(booking.getStartTime().toLocalDateTime());
+            System.out.println(booking.getEndTime().toLocalDateTime());
+            throw new IllegalArgumentException("Start time must be before end time");
+        } else {if (conferenceRoomRepository.existsById(room_id)) {
             int length = 10;
             boolean useLetters = true;
             boolean useNumbers = true;
@@ -34,7 +36,9 @@ public class BookingService {
             booking.setUniqueId(generatedString);
             booking.setConferenceRoomEntity(conferenceRoomRepository.findById(room_id).get());
             bookingRepository.save(booking);
-        }
+            throw new IllegalArgumentException("Booking created. Your reference number is: " + bookingRepository.findById(booking.getId()).get().getUniqueId());
+        }}
+
 
     }
 

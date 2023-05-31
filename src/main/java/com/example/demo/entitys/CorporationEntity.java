@@ -1,6 +1,9 @@
 package com.example.demo.entitys;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
@@ -24,7 +27,7 @@ public class CorporationEntity {
     public void setConferenceRoomEntityList(List<ConferenceRoomEntity> conferenceRoomEntityList) {
         this.conferenceRoomEntityList = conferenceRoomEntityList;
     }
-
+    @Length(min = 2, max = 20, message = "Name has to be between 2 and 20 characters")
     private String name;
 
     public Long getId() {

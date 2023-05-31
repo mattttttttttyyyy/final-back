@@ -14,8 +14,13 @@ public class CorporationService {
     CorporationRepository corporationRepository;
 
     public void createCorporation(CorporationEntity corporation) {
+        List<CorporationEntity> corporations = corporationRepository.findAll();
+        for (CorporationEntity c : corporations) {
+            if (c.getName().equals(corporation.getName())) {
+                throw new IllegalArgumentException("Corporation name already exists");
+            }
+        }
             corporationRepository.save(corporation);
-
     }
 
     public List<CorporationEntity> getAllCorporations() {

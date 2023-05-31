@@ -2,6 +2,9 @@ package com.example.demo.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
@@ -13,6 +16,8 @@ public class ConferenceRoomEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition = "serial")
     private Long id;
+
+    @Length(min = 2, max = 20, message = "Name has to be between 2 and 20 characters")
     private String name;
 
     @JsonIgnore
