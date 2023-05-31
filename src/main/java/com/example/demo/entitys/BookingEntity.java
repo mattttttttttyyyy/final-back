@@ -1,8 +1,11 @@
 package com.example.demo.entitys;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jdk.jfr.Timestamp;
 
-import java.text.SimpleDateFormat;
+import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.UUID;
 
 @Entity
 @Table(name = "booking")
@@ -13,15 +16,38 @@ public class BookingEntity {
     @Column(columnDefinition = "serial")
     private Long id;
 
-    @Timestamp
-    private SimpleDateFormat startTime;
+    String uniqueId;
 
-    public SimpleDateFormat getStartTime() {
+    java.sql.Timestamp startTime;
+
+    java.sql.Timestamp endTime;
+    @JsonIgnore
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "conference_room_id")
+    private ConferenceRoomEntity conferenceRoomEntity;
+
+    public ConferenceRoomEntity getConferenceRoomEntity() {
+        return conferenceRoomEntity;
+    }
+
+    public void setConferenceRoomEntity(ConferenceRoomEntity conferenceRoomEntity) {
+        this.conferenceRoomEntity = conferenceRoomEntity;
+    }
+
+    public Timestamp getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(SimpleDateFormat startTime) {
+    public void setStartTime(Timestamp startTime) {
         this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
     }
 
     public Long getId() {
@@ -32,14 +58,15 @@ public class BookingEntity {
         this.id = id;
     }
 
+    public String getUniqueId() {
+        return uniqueId;
+    }
+
+    public void setUniqueId(String uniqueId) {
+        this.uniqueId = uniqueId;
+    }
+
     public BookingEntity() {
     }
 
-    /*    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }*/
 }
