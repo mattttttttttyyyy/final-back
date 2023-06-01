@@ -1,5 +1,6 @@
 package com.example.demo.controllers;
 
+import com.example.demo.entitys.ConferenceRoomEntity;
 import com.example.demo.entitys.CorporationEntity;
 import com.example.demo.services.CorporationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,11 @@ public class CorporationController {
     @GetMapping("/{id}")
     public Optional<CorporationEntity> getCorporationById(@PathVariable long id){
         return service.getCorporationById(id);
+    }
+
+    @GetMapping("/byName")
+    public int getCorporationByName(@RequestParam(name = "name") String name){
+        return service.getCorporationByName(name);
     }
 
 }

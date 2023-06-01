@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.entitys.ConferenceRoomEntity;
 import com.example.demo.entitys.CorporationEntity;
 import com.example.demo.repository.CorporationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ public class CorporationService {
                 throw new IllegalArgumentException("Corporation name already exists");
             }
         }
-            corporationRepository.save(corporation);
+        corporationRepository.save(corporation);
     }
 
     public List<CorporationEntity> getAllCorporations() {
@@ -29,5 +30,17 @@ public class CorporationService {
 
     public Optional<CorporationEntity> getCorporationById(long id) {
         return corporationRepository.findById(id);
+    }
+
+    public int getCorporationByName(String name) {
+        List<CorporationEntity> corporations = corporationRepository.findAll();
+        for (CorporationEntity c : corporations) {
+            if (c.getName().equals(name)) {
+                return Math.toIntExact(c.getId());
+            }
+        }
+        return 1;
+
+
     }
 }
