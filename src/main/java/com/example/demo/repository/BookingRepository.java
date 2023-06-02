@@ -19,4 +19,6 @@ public interface BookingRepository extends JpaRepository<BookingEntity, Long> {
 
 
     List<BookingEntity> findByStartTimeBetweenAndConferenceRoomEntityId(Timestamp timestamp, Timestamp timestamp1, long roomId);
+
+    List<BookingEntity> findByStartTimeAndConferenceRoomEntity_Id(Date date1, long roomId);
 }

@@ -49,7 +49,7 @@ public class BookingController {
     }
 
     @GetMapping("/byDateAndRoom")
-    public List<BookingEntity> getBookingsByDateAndRoom(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date, @RequestParam("roomId") long roomId) {
+    public List<BookingEntity> getBookingsByDateAndRoom(@RequestParam("date") String date, @RequestParam("roomId") long roomId) {
         return service.getBookingsByDateAndRoom(date, roomId);
     }
 

@@ -10,9 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 
 
-import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -103,11 +107,28 @@ public class BookingService {
 
     }
 
-    public List<BookingEntity> getBookingsByDateAndRoom(Date date, long roomId) {
-        return bookingRepository.findByStartTimeBetweenAndConferenceRoomEntityId(
-                Timestamp.valueOf(date.toLocalDate().atStartOfDay()),
-                Timestamp.valueOf(date.toLocalDate().plusDays(1).atStartOfDay()),
-                roomId
-        );
+    public List<BookingEntity> getBookingsByDateAndRoom(String date, long roomId) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        Date dateAfter = null;
+        try {
+            dateAfter = format.parse(date);
+            System.out.println(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        List<BookingEntity> bookings = bookingRepository.findAll();
+        Date finalDateAfter = dateAfter;
+        assert finalDateAfter != null;
+        LocalDate dateStripped = new Date(finalDateAfter.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        bookings.removeIf(booking -> !booking.getStartTime().toLocalDateTime().toLocalDate().isEqual(dateStripped));
+        System.out.println("Booking request happened");
+        System.out.println(dateAfter);
+        System.out.println(bookings);
+        if(bookings.isEmpty()){
+            throw new IllegalArgumentException("No bookings found");
+        } else {
+            return bookings;
+        }
+
     }
 }
