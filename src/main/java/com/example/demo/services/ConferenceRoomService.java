@@ -17,7 +17,7 @@ public class ConferenceRoomService {
     CorporationService corporationService;
 
     public void createRoom(ConferenceRoomEntity conferenceRoom, long corporate_id) {
-        conferenceRoom.setCorporationEntity(corporationService.getCorporationById(corporate_id).get());
+        conferenceRoom.setCorporationEntity(corporationService.getCorporationById(corporate_id));
         conferenceRoomRepository.save(conferenceRoom);
     }
 

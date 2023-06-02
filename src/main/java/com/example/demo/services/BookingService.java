@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,10 +39,12 @@ public class BookingService {
                     throw new IllegalArgumentException("Booking is in another booking");
                 } else if (booking.getStartTime().toLocalDateTime().isEqual(b.getStartTime().toLocalDateTime()) || booking.getEndTime().toLocalDateTime().isEqual(b.getEndTime().toLocalDateTime())) {
                     throw new IllegalArgumentException("Booking is in another booking");
-                } else if (booking.getStartTime().toLocalDateTime().isBefore( LocalDateTime.now())) {
-                    throw new IllegalArgumentException("Booking start time is in the past");
                 }
             }
+        }
+
+        if (booking.getStartTime().toLocalDateTime().isBefore( LocalDateTime.now())) {
+            throw new IllegalArgumentException("Booking start time is in the past");
         }
 
         if (booking.getStartTime().toLocalDateTime().isAfter(booking.getEndTime().toLocalDateTime())){
@@ -98,5 +101,13 @@ public class BookingService {
             throw new IllegalArgumentException("Booking not found");
         }
 
+    }
+
+    public List<BookingEntity> getBookingsByDateAndRoom(Date date, long roomId) {
+        return bookingRepository.findByStartTimeBetweenAndConferenceRoomEntityId(
+                Timestamp.valueOf(date.toLocalDate().atStartOfDay()),
+                Timestamp.valueOf(date.toLocalDate().plusDays(1).atStartOfDay()),
+                roomId
+        );
     }
 }

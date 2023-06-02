@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -45,6 +46,11 @@ public class BookingController {
     public  ResponseEntity<String> deleteBooking(@PathVariable String unique_id){
         service.deleteBooking(unique_id);
         return new ResponseEntity<>("Booking deleted", HttpStatus.OK);
+    }
+
+    @GetMapping("/byDateAndRoom")
+    public List<BookingEntity> getBookingsByDateAndRoom(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date date, @RequestParam("roomId") long roomId) {
+        return service.getBookingsByDateAndRoom(date, roomId);
     }
 
 }

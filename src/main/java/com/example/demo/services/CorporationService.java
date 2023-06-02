@@ -31,8 +31,12 @@ public class CorporationService {
         return corporationRepository.findAll();
     }
 
-    public Optional<CorporationEntity> getCorporationById(long id) {
-        return corporationRepository.findById(id);
+    public CorporationEntity getCorporationById(long id) {
+        if (!corporationRepository.existsById(id)) {
+            throw new IllegalArgumentException("Corporation does not exist");
+        } else {
+            return corporationRepository.findById(id).get();
+        }
     }
 
     public int getCorporationByName(String name) {

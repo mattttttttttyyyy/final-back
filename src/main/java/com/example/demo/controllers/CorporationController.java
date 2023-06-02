@@ -27,7 +27,7 @@ public class CorporationController {
     }
 
     @GetMapping("/{id}")
-    public Optional<CorporationEntity> getCorporationById(@PathVariable long id){
+    public CorporationEntity getCorporationById(@PathVariable long id){
         return service.getCorporationById(id);
     }
 

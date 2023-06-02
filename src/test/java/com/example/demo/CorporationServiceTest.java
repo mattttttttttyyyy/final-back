@@ -14,6 +14,7 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -86,6 +87,24 @@ public class CorporationServiceTest {
         corporationEntity.setName("test different case");
         assertThrows(IllegalArgumentException.class, () -> {
             corporationService.createCorporation(corporationEntity);
+        });
+    }
+
+    @Test
+    public void shouldUserNeedCorporationID(){
+        long corporationID = 1;
+        CorporationEntity corporationEntity = new CorporationEntity();
+        corporationEntity.setName("GetCorprationID");
+        corporationController.addCorporation(corporationEntity);
+        CorporationEntity result = corporationController.getCorporationById(corporationID);
+        assertEquals(corporationID, result.getId());
+    }
+
+    @Test
+    public void shouldUserNeedCorporationIDThatDontExist(){
+        long corporationID = 11111;
+        assertThrows(IllegalArgumentException.class, () -> {
+            corporationService.getCorporationById(corporationID);
         });
     }
 
