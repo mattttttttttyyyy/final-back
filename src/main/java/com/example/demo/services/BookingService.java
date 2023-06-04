@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.entitys.BookingEntity;
+import com.example.demo.entitys.ConferenceRoomEntity;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.ConferenceRoomRepository;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -28,11 +29,15 @@ public class BookingService {
     ConferenceRoomRepository conferenceRoomRepository;
 
 
-    public BookingEntity addBooking(BookingEntity booking, long room_id) {
+    public BookingEntity checkBooking(BookingEntity booking, long room_id){
+        try {
+            conferenceRoomRepository.findById(room_id);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Room doesn't exist");
+        }
+
         List<BookingEntity> bookings = bookingRepository.findAll();
         bookings.removeIf(b -> b.getConferenceRoomEntity().getId() != room_id);
-
-
         for (BookingEntity b : bookings) {
             if (b.getConferenceRoomEntity().getId() == room_id) {
                 if (booking.getStartTime().toLocalDateTime().isAfter(b.getStartTime().toLocalDateTime()) && booking.getStartTime().toLocalDateTime().isBefore(b.getEndTime().toLocalDateTime())) {
@@ -55,24 +60,40 @@ public class BookingService {
             System.out.println(booking.getStartTime().toLocalDateTime());
             System.out.println(booking.getEndTime().toLocalDateTime());
             throw new IllegalArgumentException("Start time must be before end time");
-        }  else {if (conferenceRoomRepository.existsById(room_id)) {
-            int length = 10;
-            boolean useLetters = true;
-            boolean useNumbers = true;
-            String generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
-            List<BookingEntity> bookingEntities = bookingRepository.findAll();
+        }
+
+        return booking;
+    }
+
+
+    public BookingEntity addBooking(BookingEntity booking, long room_id) {
+        booking = checkBooking(booking, room_id);
+        int length = 10;
+        boolean useLetters = true;
+        boolean useNumbers = true;
+        String generatedString;
+        boolean idIsUnique = false;
+
+        List<BookingEntity> bookingEntities = bookingRepository.findAll();
+        do  {
+            generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
             for (BookingEntity bookingEntity : bookingEntities) {
                 if (bookingEntity.getUniqueId().equals(generatedString)) {
                     generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
+                } else  {
+                    idIsUnique = true;
                 }
             }
-            booking.setUniqueId(generatedString);
-            booking.setConferenceRoomEntity(conferenceRoomRepository.findById(room_id).get());
-            return bookingRepository.save(booking);
-            //throw new IllegalArgumentException("Booking created. Your reference number is: " + bookingRepository.findById(booking.getId()).get().getUniqueId());
-        }}
+        }  while (idIsUnique);
+        for (BookingEntity bookingEntity : bookingEntities) {
+            if (bookingEntity.getUniqueId().equals(generatedString)) {
+                generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
+            }
+        }
+        booking.setUniqueId(generatedString);
+        booking.setConferenceRoomEntity(conferenceRoomRepository.findById(room_id).get());
 
-        return null;
+        return bookingRepository.save(booking);
     }
 
 
@@ -109,6 +130,7 @@ public class BookingService {
 
     public List<BookingEntity> getBookingsByDateAndRoom(String date, long roomId) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        System.out.println("Booking request happened");
         Date dateAfter = null;
         try {
             dateAfter = format.parse(date);
@@ -121,14 +143,49 @@ public class BookingService {
         assert finalDateAfter != null;
         LocalDate dateStripped = new Date(finalDateAfter.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         bookings.removeIf(booking -> !booking.getStartTime().toLocalDateTime().toLocalDate().isEqual(dateStripped));
-        System.out.println("Booking request happened");
+
         System.out.println(dateAfter);
         System.out.println(bookings);
         if(bookings.isEmpty()){
-            throw new IllegalArgumentException("No bookings found");
+            return null;
         } else {
             return bookings;
         }
 
+    }
+
+    public BookingEntity updateBooking(String uniqueId, BookingEntity bookingEntity) {
+        BookingEntity bookingToUpdate = getBookingByUniqueID(uniqueId);
+        BookingEntity checkedBooking = checkBooking(bookingEntity, bookingToUpdate.getId());
+        bookingToUpdate.setStartTime(checkedBooking.getStartTime());
+        bookingToUpdate.setEndTime(checkedBooking.getEndTime());
+        bookingRepository.save(bookingToUpdate);
+        return  bookingRepository.save(bookingToUpdate);
+    }
+
+
+
+    public BookingEntity getBookingByUniqueID(String uniqueId) {
+        List<BookingEntity> bookings = bookingRepository.findAll();
+        for (BookingEntity booking : bookings) {
+            if (booking.getUniqueId().equals(uniqueId)) {
+                return booking;
+            }
+        }
+        throw new IllegalArgumentException("Booking not found");
+    }
+
+    public long getRoomIDByUniqueID(String uniqueId) {
+        List<BookingEntity> bookings = bookingRepository.findAll();
+        for (BookingEntity booking : bookings) {
+            if (booking.getUniqueId().equals(uniqueId)) {
+                return booking.getConferenceRoomEntity().getId();
+            }
+        }
+        throw new IllegalArgumentException("Booking not found");
+    }
+
+    public void deleteBookingById(long id) {
+        bookingRepository.deleteById(id);
     }
 }

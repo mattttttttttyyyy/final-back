@@ -25,7 +25,7 @@ public class ConferenceRoomEntity {
     @JoinColumn(name = "corporation_id", columnDefinition = "integer")
     private CorporationEntity corporationEntity;
 
-    @OneToMany(mappedBy = "conferenceRoomEntity")
+    @OneToMany(mappedBy = "conferenceRoomEntity", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private List<BookingEntity> bookingEntityList;
 
     public List<BookingEntity> getBookingEntityList() {
@@ -61,5 +61,14 @@ public class ConferenceRoomEntity {
     }
 
     public ConferenceRoomEntity() {
+    }
+
+    @Override
+    public String
+    toString() {
+        return "ConferenceRoomEntity{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

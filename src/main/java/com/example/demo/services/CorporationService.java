@@ -50,4 +50,22 @@ public class CorporationService {
 
 
     }
+
+    public void deleteCorporation(long id) {
+        if (!corporationRepository.existsById(id)) {
+            throw new IllegalArgumentException("Corporation does not exist");
+        } else {
+            corporationRepository.deleteById(id);
+        }
+    }
+
+    public void updateCorporation(long id, CorporationEntity corporation) {
+        if (!corporationRepository.existsById(id)) {
+            throw new IllegalArgumentException("Corporation does not exist");
+        } else {
+            CorporationEntity c = corporationRepository.findById(id).get();
+            c.setName(corporation.getName());
+            corporationRepository.save(c);
+        }
+    }
 }

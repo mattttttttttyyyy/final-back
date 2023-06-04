@@ -39,5 +39,10 @@ public class ConferenceRoomController {
         service.deleteRoom(room_id);
     }
 
+    @PatchMapping("/update/{room_id}")
+    public void updateRoom(@PathVariable long room_id, @RequestBody ConferenceRoomEntity conferenceRoomEntity){
+        service.updateRoom(room_id, conferenceRoomEntity);
+    }
+
 
 }

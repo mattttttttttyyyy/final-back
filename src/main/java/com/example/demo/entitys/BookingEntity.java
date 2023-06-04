@@ -22,7 +22,7 @@ public class BookingEntity {
 
     java.sql.Timestamp endTime;
     @JsonIgnore
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "conference_room_id")
     private ConferenceRoomEntity conferenceRoomEntity;
 

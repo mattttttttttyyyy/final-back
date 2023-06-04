@@ -36,4 +36,14 @@ public class CorporationController {
         return service.getCorporationByName(name);
     }
 
+    @DeleteMapping("/delete/{id}")
+    public void deleteCorporation(@PathVariable long id){
+        service.deleteCorporation(id);
+    }
+
+    @PatchMapping("/update/{id}")
+    public void updateCorporation(@PathVariable long id, @RequestBody CorporationEntity corporation){
+        service.updateCorporation(id, corporation);
+    }
+
 }
