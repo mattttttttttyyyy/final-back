@@ -35,8 +35,8 @@ public class CorporationService {
         return corporationEntity;
     }
 
-    public void createCorporation(CorporationEntity corporation) {
-        corporationRepository.save(corporationNameChecker(corporation));
+    public Long createCorporation(CorporationEntity corporation) {
+        return corporationRepository.save(corporationNameChecker(corporation)).getId();
     }
 
     public List<CorporationEntity> getAllCorporations() {

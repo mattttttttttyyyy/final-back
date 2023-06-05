@@ -3,6 +3,7 @@ package com.example.demo.controllers;
 import com.example.demo.entities.CorporationEntity;
 import com.example.demo.services.CorporationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,8 +17,8 @@ public class CorporationController {
     CorporationService service;
 
     @PostMapping("/add")
-    public void addCorporation(@RequestBody CorporationEntity corporation) {
-        service.createCorporation(corporation);
+    public ResponseEntity<Long> addCorporation(@RequestBody CorporationEntity corporation) {
+        return new ResponseEntity<>(service.createCorporation(corporation), org.springframework.http.HttpStatus.OK);
     }
 
     @GetMapping("/all")
