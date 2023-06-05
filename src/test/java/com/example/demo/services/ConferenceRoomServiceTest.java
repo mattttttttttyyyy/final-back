@@ -154,6 +154,31 @@ public class ConferenceRoomServiceTest {
         );
     }
 
+    @Test
+    @Transactional
+    public void shouldDeletingAllRoomsWork() {
+        ConferenceRoomEntity conferenceRoom = new ConferenceRoomEntity();
+        conferenceRoom.setName("Conference xyz");
+        conferenceRoomController.addConferenceRoom(conferenceRoom, testCorporation.getId());
+        conferenceRoomRepository.deleteAll();
+        assertEquals(0, conferenceRoomRepository.findAll().size());
+    }
+
+    @Test
+    @Transactional
+    public void shouldDeletingRoomWithBookingWork(){
+        ConferenceRoomEntity conferenceRoom = new ConferenceRoomEntity();
+        conferenceRoom.setName("Conference xyz");
+        conferenceRoomController.addConferenceRoom(conferenceRoom, testCorporation.getId());
+        BookingEntity bookingEntity = new BookingEntity();
+        bookingEntity.setStartTime(Timestamp.valueOf("2024-01-01 12:00:00"));
+        bookingEntity.setEndTime(Timestamp.valueOf("2024-01-01 13:00:00"));
+        bookingEntity.setConferenceRoomEntity(conferenceRoomRepository.findAll().get(0));
+        System.out.println(conferenceRoomRepository.findAll());
+        conferenceRoomRepository.deleteAll();
+        assertEquals(0, conferenceRoomRepository.findAll().size());
+    }
+
     }
 
 

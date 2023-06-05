@@ -2,8 +2,11 @@ version: '3.7'
 
 services:
   app:
-    image: 'apeczka:latest'
-    container_name: finalProject
+    image: 'final:latest'
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    container_name: aplikacja
     restart: always
     depends_on:
       - postgresql
@@ -13,8 +16,8 @@ services:
       - app-net
 
   postgresql:
-    image: 'postgres:latest'
-    container_name: finalprojectsql
+    image: postgres:alpine
+    container_name: postgresqll
     restart: always
     ports:
       - "5433:5432"

@@ -55,4 +55,10 @@ public class ConferenceRoomService {
         }
 
     }
+    public void deleteAllRoomsByCorporation(long corporateId){
+        List<ConferenceRoomEntity> rooms = conferenceRoomRepository.findByCorporationEntity_Id(corporateId);
+        for(ConferenceRoomEntity room : rooms){
+            conferenceRoomRepository.deleteById(room.getId());
+        }
+    }
 }

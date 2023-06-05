@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.entitys.ConferenceRoomEntity;
 import com.example.demo.entitys.CorporationEntity;
+import com.example.demo.repository.ConferenceRoomRepository;
 import com.example.demo.repository.CorporationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,9 @@ import java.util.Optional;
 public class CorporationService {
     @Autowired
     CorporationRepository corporationRepository;
+
+    @Autowired
+    ConferenceRoomRepository conferenceRoomRepository;
 
     public void createCorporation(CorporationEntity corporation) {
         List<CorporationEntity> corporations = corporationRepository.findAll();
@@ -55,6 +59,10 @@ public class CorporationService {
         if (!corporationRepository.existsById(id)) {
             throw new IllegalArgumentException("Corporation does not exist");
         } else {
+            List<ConferenceRoomEntity> rooms = conferenceRoomRepository.findByCorporationEntity_Id(id);
+            for (ConferenceRoomEntity room : rooms) {
+                conferenceRoomRepository.deleteById(room.getId());
+            }
             corporationRepository.deleteById(id);
         }
     }

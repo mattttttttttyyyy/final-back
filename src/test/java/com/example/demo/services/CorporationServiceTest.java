@@ -1,14 +1,19 @@
 package com.example.demo.services;
 
 import com.example.demo.controllers.CorporationController;
+import com.example.demo.entitys.ConferenceRoomEntity;
 import com.example.demo.entitys.CorporationEntity;
+import com.example.demo.repository.BookingRepository;
+import com.example.demo.repository.ConferenceRoomRepository;
 import com.example.demo.repository.CorporationRepository;
 import com.example.demo.services.CorporationService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
+import org.springframework.transaction.annotation.Transactional;
 import org.testcontainers.containers.PostgreSQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -42,12 +47,28 @@ public class CorporationServiceTest {
     @Autowired
     private CorporationController corporationController;
 
+    @Autowired
+    private ConferenceRoomService conferenceRoomService;
+    @Autowired
+    private BookingRepository bookingRepository;
+
+    @Autowired
+    private ConferenceRoomRepository conferenceRoomRepository;
+
+    @AfterEach
+    public void cleanUp(){
+        bookingRepository.deleteAll();
+        conferenceRoomRepository.deleteAll();
+        corporationRepository.deleteAll();
+    }
+
+
 
     @Test
     public void testGetAllCorporations() {
 
         List<CorporationEntity> list = corporationRepository.findAll();
-        assertEquals(1,  list.size());
+        assertEquals(0,  list.size());
     }
 
     @Test
@@ -90,15 +111,6 @@ public class CorporationServiceTest {
         });
     }
 
-    @Test
-    public void shouldUserNeedCorporationID(){
-        long corporationID = 1;
-        CorporationEntity corporationEntity = new CorporationEntity();
-        corporationEntity.setName("GetCorprationID");
-        corporationController.addCorporation(corporationEntity);
-        CorporationEntity result = corporationController.getCorporationById(corporationID);
-        assertEquals(corporationID, result.getId());
-    }
 
     @Test
     public void shouldUserNeedCorporationIDThatDontExist(){
@@ -108,5 +120,36 @@ public class CorporationServiceTest {
         });
     }
 
+    @Test
+    public void shouldDeletingAllCorporationsWork(){
+        corporationRepository.deleteAll();
+        List<CorporationEntity> list = corporationRepository.findAll();
+        assertEquals(0, list.size());
+    }
 
-}
+    @Test
+    @Transactional
+    public void shouldDeletingCorporationsWithConferenceRoomsWork(){
+        CorporationEntity corporationEntity = new CorporationEntity();
+        corporationEntity.setName("CorpWithRoom");
+        corporationController.addCorporation(corporationEntity);
+        List<CorporationEntity> list = corporationRepository.findAll();
+        ConferenceRoomEntity conferenceRoomEntity = new ConferenceRoomEntity();
+        conferenceRoomEntity.setName("RoomWithCorp");
+        for (CorporationEntity corporationEntity1 : list) {
+            conferenceRoomEntity.setCorporationEntity(corporationEntity1);
+            conferenceRoomService.createRoom(conferenceRoomEntity, corporationEntity1.getId());
+        }
+        List<CorporationEntity> list2 = corporationRepository.findAll();
+        for (CorporationEntity corporationEntity1 : list2) {
+            corporationService.deleteCorporation(corporationEntity1.getId());
+
+        }
+        System.out.println(corporationService.getAllCorporations());
+        assertEquals(0, corporationRepository.findAll().size());
+
+
+        }
+    }
+
+

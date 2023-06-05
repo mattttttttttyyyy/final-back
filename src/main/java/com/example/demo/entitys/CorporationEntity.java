@@ -17,8 +17,9 @@ public class CorporationEntity {
     private Long id;
 
 
-    @OneToMany(mappedBy = "corporationEntity")
+    @OneToMany(mappedBy = "corporationEntity", cascade = {CascadeType.REMOVE})
     private List<ConferenceRoomEntity> conferenceRoomEntityList;
+
 
     public List<ConferenceRoomEntity> getConferenceRoomEntityList() {
         return conferenceRoomEntityList;
