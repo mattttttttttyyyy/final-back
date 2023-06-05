@@ -27,6 +27,10 @@ public class ConferenceRoomService {
     }
 
     public ConferenceRoomEntity checkUniqueName(ConferenceRoomEntity conferenceRoomEntity) {
+        if(conferenceRoomEntity.getLevel() > 10){
+            throw new IllegalArgumentException("Level doesn't exist");
+        }
+
         List<ConferenceRoomEntity> rooms = conferenceRoomRepository.findAll();
         for (ConferenceRoomEntity room : rooms) {
             if (room.getName().equalsIgnoreCase(conferenceRoomEntity.getName())) {

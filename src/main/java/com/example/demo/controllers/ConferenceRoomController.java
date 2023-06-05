@@ -4,6 +4,8 @@ import com.example.demo.entitys.ConferenceRoomEntity;
 import com.example.demo.services.ConferenceRoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+
 
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class ConferenceRoomController {
 
     @PostMapping("/add")
     public void addConferenceRoom(@RequestBody ConferenceRoomEntity conferenceRoomEntity, @RequestParam(name = "corporate_id") long corporate_id) {
+
         service.createRoom(conferenceRoomEntity, corporate_id);
     }
 

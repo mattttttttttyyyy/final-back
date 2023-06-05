@@ -26,6 +26,24 @@ public class ConferenceRoomEntity {
     @OneToMany(mappedBy = "conferenceRoomEntity", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     private List<BookingEntity> bookingEntityList;
 
+    int level;
+
+    int sittingNumber;
+
+    int standingNumber;
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getSittingNumber() {
+        return sittingNumber;
+    }
+
+    public int getStandingNumber() {
+        return standingNumber;
+    }
+
     public ConferenceRoomEntity() {
     }
 
