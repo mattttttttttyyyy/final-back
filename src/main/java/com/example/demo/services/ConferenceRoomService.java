@@ -22,10 +22,10 @@ public class ConferenceRoomService {
         conferenceRoomRepository.save(conferenceRoom);
     }
 
-    public ConferenceRoomEntity checkUniqueName(ConferenceRoomEntity  conferenceRoomEntity){
+    public ConferenceRoomEntity checkUniqueName(ConferenceRoomEntity conferenceRoomEntity) {
         List<ConferenceRoomEntity> rooms = conferenceRoomRepository.findAll();
-        for(ConferenceRoomEntity room : rooms){
-            if(room.getName().equalsIgnoreCase(conferenceRoomEntity.getName())){
+        for (ConferenceRoomEntity room : rooms) {
+            if (room.getName().equalsIgnoreCase(conferenceRoomEntity.getName())) {
                 throw new IllegalArgumentException("Room name already exists");
             }
         }
@@ -55,9 +55,10 @@ public class ConferenceRoomService {
         }
 
     }
-    public void deleteAllRoomsByCorporation(long corporateId){
+
+    public void deleteAllRoomsByCorporation(long corporateId) {
         List<ConferenceRoomEntity> rooms = conferenceRoomRepository.findByCorporationEntity_Id(corporateId);
-        for(ConferenceRoomEntity room : rooms){
+        for (ConferenceRoomEntity room : rooms) {
             conferenceRoomRepository.deleteById(room.getId());
         }
     }

@@ -2,8 +2,6 @@ package com.example.demo.entitys;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
@@ -27,6 +25,9 @@ public class ConferenceRoomEntity {
 
     @OneToMany(mappedBy = "conferenceRoomEntity", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.REMOVE})
     private List<BookingEntity> bookingEntityList;
+
+    public ConferenceRoomEntity() {
+    }
 
     public List<BookingEntity> getBookingEntityList() {
         return bookingEntityList;
@@ -58,9 +59,6 @@ public class ConferenceRoomEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public ConferenceRoomEntity() {
     }
 
     @Override

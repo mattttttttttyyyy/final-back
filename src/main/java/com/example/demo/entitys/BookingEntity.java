@@ -1,30 +1,28 @@
 package com.example.demo.entitys;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.util.UUID;
 
 @Entity
 @Table(name = "booking")
 
 public class BookingEntity {
+    String uniqueId;
+    java.sql.Timestamp startTime;
+    java.sql.Timestamp endTime;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(columnDefinition = "serial")
     private Long id;
-
-    String uniqueId;
-
-    java.sql.Timestamp startTime;
-
-    java.sql.Timestamp endTime;
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "conference_room_id")
     private ConferenceRoomEntity conferenceRoomEntity;
+
+    public BookingEntity() {
+    }
 
     public ConferenceRoomEntity getConferenceRoomEntity() {
         return conferenceRoomEntity;
@@ -64,9 +62,6 @@ public class BookingEntity {
 
     public void setUniqueId(String uniqueId) {
         this.uniqueId = uniqueId;
-    }
-
-    public BookingEntity() {
     }
 
 }

@@ -20,35 +20,35 @@ public class BookingController {
     BookingService service;
 
     @PostMapping("/add/{room_id}")
-    public ResponseEntity<BookingEntity> addBooking(@RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) BookingEntity bookingEntity, @PathVariable long room_id){
+    public ResponseEntity<BookingEntity> addBooking(@RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) BookingEntity bookingEntity, @PathVariable long room_id) {
         System.out.println(bookingEntity.getStartTime());
-        return new ResponseEntity<>(service.addBooking(bookingEntity, room_id), HttpStatus.OK) ;
+        return new ResponseEntity<>(service.addBooking(bookingEntity, room_id), HttpStatus.OK);
     }
 
 
     @GetMapping("/all")
-    public List<BookingEntity> getAllBookings(){
+    public List<BookingEntity> getAllBookings() {
         return service.getAllBookings();
     }
 
     @GetMapping("/byRoom/{room_id}")
-    public List<BookingEntity> getBookingsByRoom(@PathVariable long room_id){
+    public List<BookingEntity> getBookingsByRoom(@PathVariable long room_id) {
         return service.getBookingsByRoom(room_id);
     }
 
     @GetMapping("/availableToday/{room_id}")
-    public List<BookingEntity> getAvailableToday(@PathVariable long room_id, @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Timestamp timestamp){
+    public List<BookingEntity> getAvailableToday(@PathVariable long room_id, @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Timestamp timestamp) {
         return service.getAvailableToday(room_id, timestamp);
     }
 
     @DeleteMapping("/delete/{unique_id}")
-    public  ResponseEntity<String> deleteBooking(@PathVariable String unique_id){
+    public ResponseEntity<String> deleteBooking(@PathVariable String unique_id) {
         service.deleteBooking(unique_id);
         return new ResponseEntity<>("Booking deleted", HttpStatus.OK);
     }
 
     @GetMapping("/byUniqueID/{unique_id}")
-    public BookingEntity getBookingByUniqueID(@PathVariable String unique_id){
+    public BookingEntity getBookingByUniqueID(@PathVariable String unique_id) {
         return service.getBookingByUniqueID(unique_id);
     }
 
@@ -56,20 +56,21 @@ public class BookingController {
     public List<BookingEntity> getBookingsByDateAndRoom(@RequestParam("date") String date, @RequestParam("roomId") long roomId) {
         return service.getBookingsByDateAndRoom(date, roomId);
     }
+
     @GetMapping("/roomID/{unique_id}")
-    public long getRoomIDByUniqueID(@PathVariable String unique_id){
+    public long getRoomIDByUniqueID(@PathVariable String unique_id) {
         return service.getRoomIDByUniqueID(unique_id);
     }
 
 
     @PatchMapping("/update/{unique_id}")
-    public ResponseEntity<BookingEntity> updateBooking(@PathVariable String unique_id, @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) BookingEntity bookingEntity){
+    public ResponseEntity<BookingEntity> updateBooking(@PathVariable String unique_id, @RequestBody @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) BookingEntity bookingEntity) {
         service.updateBooking(unique_id, bookingEntity);
         return new ResponseEntity<>((bookingEntity), HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteByID/{id}")
-    public void deleteBookingByID(@PathVariable long id){
+    public void deleteBookingByID(@PathVariable long id) {
         service.deleteBookingById(id);
     }
 
