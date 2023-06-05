@@ -16,7 +16,7 @@ services:
       - app-net
 
   postgresql:
-    image: postgres:alpine
+    image: postgres
     container_name: postgresqll
     restart: always
     ports:

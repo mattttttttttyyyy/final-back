@@ -9,11 +9,8 @@ import org.hibernate.validator.constraints.Length;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
+@Getter @Setter  @NoArgsConstructor
 @Table(name = "corporation")
-
 public class CorporationEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

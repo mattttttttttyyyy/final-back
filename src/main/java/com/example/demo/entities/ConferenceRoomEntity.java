@@ -10,11 +10,8 @@ import org.hibernate.validator.constraints.Length;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
-@NoArgsConstructor
+@Getter @Setter  @NoArgsConstructor
 @Table(name = "conference_room")
-
 public class ConferenceRoomEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,7 +34,6 @@ public class ConferenceRoomEntity {
     int sittingNumber;
 
     int standingNumber;
-
 
     @Override
     public String

@@ -6,12 +6,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
-@Table(name = "booking")
-@Getter
-@Setter
-@NoArgsConstructor
+import java.sql.Timestamp;
 
+@Entity
+@Getter @Setter  @NoArgsConstructor
+@Table(name = "booking")
 public class BookingEntity {
     String uniqueId;
     java.sql.Timestamp startTime;
