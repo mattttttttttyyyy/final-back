@@ -17,17 +17,24 @@ public class CorporationService {
     @Autowired
     ConferenceRoomRepository conferenceRoomRepository;
 
-    public void createCorporation(CorporationEntity corporation) {
+    public CorporationEntity corporationNameChecker(CorporationEntity corporationEntity){
         List<CorporationEntity> corporations = corporationRepository.findAll();
         for (CorporationEntity c : corporations) {
-            if (c.getName().equalsIgnoreCase(corporation.getName())) {
+            if (c.getName().equalsIgnoreCase(corporationEntity.getName())) {
                 throw new IllegalArgumentException("Corporation name already exists");
             }
         }
-        if (corporation.getName().length() < 3) {
+        if (corporationEntity.getName().length() < 3) {
             throw new IllegalArgumentException("Corporation name too short");
         }
-        corporationRepository.save(corporation);
+        if (corporationEntity.getName().length() > 20) {
+            throw new IllegalArgumentException("Corporation name too long");
+        }
+        return corporationEntity;
+    }
+
+    public void createCorporation(CorporationEntity corporation) {
+        corporationRepository.save(corporationNameChecker(corporation));
     }
 
     public List<CorporationEntity> getAllCorporations() {
@@ -67,12 +74,6 @@ public class CorporationService {
     }
 
     public void updateCorporation(long id, CorporationEntity corporation) {
-        if (!corporationRepository.existsById(id)) {
-            throw new IllegalArgumentException("Corporation does not exist");
-        } else {
-            CorporationEntity c = corporationRepository.findById(id).get();
-            c.setName(corporation.getName());
-            corporationRepository.save(c);
-        }
+            corporationRepository.save(corporationNameChecker(corporation));
     }
 }

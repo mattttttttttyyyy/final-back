@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.entitys.ConferenceRoomEntity;
 import com.example.demo.repository.ConferenceRoomRepository;
+import com.example.demo.repository.CorporationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +16,9 @@ public class ConferenceRoomService {
 
     @Autowired
     CorporationService corporationService;
+
+    @Autowired
+    CorporationRepository corporationRepository;
 
     public void createRoom(ConferenceRoomEntity conferenceRoom, long corporate_id) {
         conferenceRoom = checkUniqueName(conferenceRoom);
@@ -37,11 +41,18 @@ public class ConferenceRoomService {
     }
 
     public List<ConferenceRoomEntity> getRoomsByCorpoId(long corporateId) {
+        if (!corporationRepository.existsById(corporateId)) {
+            throw new IllegalArgumentException("Corporation does not exist");
+        }
         return conferenceRoomRepository.findByCorporationEntity_Id(corporateId);
     }
 
     public void deleteRoom(long roomId) {
-        conferenceRoomRepository.deleteById(roomId);
+        if (!conferenceRoomRepository.existsById(roomId)) {
+            throw new IllegalArgumentException("Room does not exist");
+        } else {
+            conferenceRoomRepository.deleteById(roomId);
+        }
     }
 
     public void updateRoom(long roomId, ConferenceRoomEntity conferenceRoomEntity) {

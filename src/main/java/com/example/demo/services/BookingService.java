@@ -98,16 +98,21 @@ public class BookingService {
     }
 
     public List<BookingEntity> getBookingsByRoom(long roomId) {
-        List<BookingEntity> bookings = bookingRepository.findAll();
-        bookings.removeIf(booking -> booking.getConferenceRoomEntity().getId() != roomId);
-        return bookings;
+        if (conferenceRoomRepository.existsById(roomId)){  List<BookingEntity> bookings = bookingRepository.findAll();
+            bookings.removeIf(booking -> booking.getConferenceRoomEntity().getId() != roomId);
+            return bookings;} else {
+            throw new IllegalArgumentException("Room doesn't exist");}
     }
 
     public List<BookingEntity> getAvailableToday(long roomId, Timestamp timestamp) {
-        List<BookingEntity> bookings = getBookingsByRoom(roomId);
-        bookings.removeIf(booking -> !booking.getStartTime().toLocalDateTime().toLocalDate().isEqual(timestamp.toLocalDateTime().toLocalDate()));
-        return bookings;
+        if (conferenceRoomRepository.existsById(roomId)){
+            List<BookingEntity> bookings = getBookingsByRoom(roomId);
+            bookings.removeIf(booking -> !booking.getStartTime().toLocalDateTime().toLocalDate().isEqual(timestamp.toLocalDateTime().toLocalDate()));
+            return bookings;} else {
+            throw new IllegalArgumentException("Room doesn't exist");}
     }
+
+
 
     public void deleteBooking(String uniqueId) {
         List<BookingEntity> bookings = bookingRepository.findAll();
@@ -181,6 +186,9 @@ public class BookingService {
     }
 
     public void deleteBookingById(long id) {
+        if (!bookingRepository.existsById(id)) {
+            throw new IllegalArgumentException("Booking not found");
+        }
         bookingRepository.deleteById(id);
     }
 }
