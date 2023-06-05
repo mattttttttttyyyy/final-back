@@ -41,7 +41,7 @@ Sample output:
     }
 ]
 ```
-
+API returns Long: corporation id.
 #### Get a corporation by Id
 
 ```http
