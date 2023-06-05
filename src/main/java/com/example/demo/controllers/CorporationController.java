@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entitys.CorporationEntity;
+import com.example.demo.entities.CorporationEntity;
 import com.example.demo.services.CorporationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/corporation")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "http://localhost")
 
 public class CorporationController {
     @Autowired

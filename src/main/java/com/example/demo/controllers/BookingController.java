@@ -1,6 +1,6 @@
 package com.example.demo.controllers;
 
-import com.example.demo.entitys.BookingEntity;
+import com.example.demo.entities.BookingEntity;
 import com.example.demo.services.BookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -13,7 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/booking")
-@CrossOrigin(origins = "http://localhost:4200/")
+@CrossOrigin(origins = "http://localhost")
 
 public class BookingController {
     @Autowired

@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.entitys.BookingEntity;
+import com.example.demo.entities.BookingEntity;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.ConferenceRoomRepository;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -57,12 +57,14 @@ public class BookingService {
             System.out.println(booking.getEndTime().toLocalDateTime());
             throw new IllegalArgumentException("Start time must be before end time");
         }
+        System.out.println("inside of name check");
 
         return booking;
     }
 
 
     public BookingEntity addBooking(BookingEntity booking, long room_id) {
+        System.out.println("Booking is happening");
         booking = checkBooking(booking, room_id);
         int length = 10;
         boolean useLetters = true;
@@ -71,16 +73,7 @@ public class BookingService {
         boolean idIsUnique = false;
 
         List<BookingEntity> bookingEntities = bookingRepository.findAll();
-        do {
-            generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
-            for (BookingEntity bookingEntity : bookingEntities) {
-                if (bookingEntity.getUniqueId().equals(generatedString)) {
-                    generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
-                } else {
-                    idIsUnique = true;
-                }
-            }
-        } while (idIsUnique);
+        generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
         for (BookingEntity bookingEntity : bookingEntities) {
             if (bookingEntity.getUniqueId().equals(generatedString)) {
                 generatedString = RandomStringUtils.random(length, useLetters, useNumbers);
@@ -88,6 +81,7 @@ public class BookingService {
         }
         booking.setUniqueId(generatedString);
         booking.setConferenceRoomEntity(conferenceRoomRepository.findById(room_id).get());
+
 
         return bookingRepository.save(booking);
     }

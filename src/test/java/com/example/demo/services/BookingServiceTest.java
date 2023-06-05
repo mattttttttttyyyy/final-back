@@ -2,23 +2,18 @@ package com.example.demo.services;
 
 import com.example.demo.controllers.BookingController;
 import com.example.demo.controllers.CorporationController;
-import com.example.demo.entitys.BookingEntity;
-import com.example.demo.entitys.ConferenceRoomEntity;
-import com.example.demo.entitys.CorporationEntity;
+import com.example.demo.entities.BookingEntity;
+import com.example.demo.entities.ConferenceRoomEntity;
+import com.example.demo.entities.CorporationEntity;
 import com.example.demo.repository.ConferenceRoomRepository;
 import com.example.demo.repository.CorporationRepository;
 import com.example.demo.repository.BookingRepository;
 
-import com.example.demo.services.BookingService;
-import com.example.demo.services.ConferenceRoomService;
-import com.example.demo.services.CorporationService;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;

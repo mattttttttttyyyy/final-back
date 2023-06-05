@@ -1,12 +1,11 @@
 package com.example.demo.services;
 
 import com.example.demo.controllers.CorporationController;
-import com.example.demo.entitys.ConferenceRoomEntity;
-import com.example.demo.entitys.CorporationEntity;
+import com.example.demo.entities.ConferenceRoomEntity;
+import com.example.demo.entities.CorporationEntity;
 import com.example.demo.repository.BookingRepository;
 import com.example.demo.repository.ConferenceRoomRepository;
 import com.example.demo.repository.CorporationRepository;
-import com.example.demo.services.CorporationService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,6 @@ import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 

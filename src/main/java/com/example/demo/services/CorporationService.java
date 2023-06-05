@@ -1,13 +1,15 @@
 package com.example.demo.services;
 
-import com.example.demo.entitys.ConferenceRoomEntity;
-import com.example.demo.entitys.CorporationEntity;
+import com.example.demo.entities.ConferenceRoomEntity;
+import com.example.demo.entities.CorporationEntity;
 import com.example.demo.repository.ConferenceRoomRepository;
 import com.example.demo.repository.CorporationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CorporationService {
@@ -61,17 +63,17 @@ public class CorporationService {
 
     }
 
+    @Transactional
     public void deleteCorporation(long id) {
-        if (!corporationRepository.existsById(id)) {
-            throw new IllegalArgumentException("Corporation does not exist");
-        } else {
-            List<ConferenceRoomEntity> rooms = conferenceRoomRepository.findByCorporationEntity_Id(id);
-            for (ConferenceRoomEntity room : rooms) {
-                conferenceRoomRepository.deleteById(room.getId());
-            }
-            corporationRepository.deleteById(id);
-        }
+        List<Long> roomIds = conferenceRoomRepository.findByCorporationEntity_Id(id)
+                .stream()
+                .map(ConferenceRoomEntity::getId)
+                .collect(Collectors.toList());
+
+        conferenceRoomRepository.deleteAllById(roomIds);
+        corporationRepository.deleteById(id);
     }
+
 
     public void updateCorporation(long id, CorporationEntity corporation) {
             corporationRepository.save(corporationNameChecker(corporation));

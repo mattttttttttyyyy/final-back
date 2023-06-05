@@ -27,7 +27,7 @@ public class ErrorHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler({IllegalArgumentException.class})
-    String handleConstraint(IllegalArgumentException e) {
+    String IllegalArgumentHandler(IllegalArgumentException e) {
         return e.getMessage();
     }
 

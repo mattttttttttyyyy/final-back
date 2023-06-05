@@ -1,12 +1,18 @@
-package com.example.demo.entitys;
+package com.example.demo.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
 @Table(name = "conference_room")
 
 public class ConferenceRoomEntity {
@@ -32,52 +38,6 @@ public class ConferenceRoomEntity {
 
     int standingNumber;
 
-    public int getLevel() {
-        return level;
-    }
-
-    public int getSittingNumber() {
-        return sittingNumber;
-    }
-
-    public int getStandingNumber() {
-        return standingNumber;
-    }
-
-    public ConferenceRoomEntity() {
-    }
-
-    public List<BookingEntity> getBookingEntityList() {
-        return bookingEntityList;
-    }
-
-    public void setBookingEntityList(List<BookingEntity> bookingEntityList) {
-        this.bookingEntityList = bookingEntityList;
-    }
-
-    public CorporationEntity getCorporationEntity() {
-        return corporationEntity;
-    }
-
-    public void setCorporationEntity(CorporationEntity corporationEntity) {
-        this.corporationEntity = corporationEntity;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     @Override
     public String

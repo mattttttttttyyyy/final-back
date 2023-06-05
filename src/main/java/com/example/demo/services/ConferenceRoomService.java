@@ -1,6 +1,6 @@
 package com.example.demo.services;
 
-import com.example.demo.entitys.ConferenceRoomEntity;
+import com.example.demo.entities.ConferenceRoomEntity;
 import com.example.demo.repository.ConferenceRoomRepository;
 import com.example.demo.repository.CorporationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
